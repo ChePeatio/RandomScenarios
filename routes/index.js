@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var UserModel = require('../models/User.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -8,7 +9,18 @@ router.get('/', function (req, res, next) {
 
 // normal user login the system
 router.post('/',function (req,res,next) {
-	
+    var user = new UserModel();
+    user.name = '1234';
+    user.s1 = [1,2,3,4,4,3,2,1,1,2];
+    user.s2 = [1,1,1,1,1,1,1,1,1,1];
+    user.s3 = [2,2,2,2,2,2,2,2,2,2];
+    user.save(function(err,user){
+        if(err){
+            next(err);
+        }
+        console.log(user);
+    });
+
 	res.redirect('/scenario1');
 });
 
