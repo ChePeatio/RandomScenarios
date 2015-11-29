@@ -40,12 +40,6 @@ app.use(session({
   secret:'wrgidsg3469fjvx#T#jwuijgf',
   cookie:{maxAge:60*1000}
 }));
-/*
-app.use(function(req, res, next) {
-  console.log("app.user local");
-  res.local.user = req.session.user;
-  next();
-});*/
 
 
 app.use('/', routes);

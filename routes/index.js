@@ -27,9 +27,9 @@ router.post('/',function (req,res,next) {
 			return res.redirect('/');
 		}
         if(user){
-            //console.log('the user has been created!');
-            //req.session.user = user;
+            req.session.user = user.name;
             req.flash('success', "欢迎回来");
+            console.log(req.session);
             return res.redirect('/scenario1');
         }
         UserProxy.newAndSave(username,function(err,user){
@@ -38,9 +38,9 @@ router.post('/',function (req,res,next) {
                 console.log(err);
                 return res.redirect('/');
             }
-            //req.session.user = user;
+            req.session.user = user.name;
             req.flash('success', "欢迎使用");
-            //console.log(user);
+            console.log(req.session);
             return res.redirect('/scenario1');
         });
 	});
@@ -62,17 +62,28 @@ router.post('/login',function (req,res,next) {
 // Random Scenario 1
 //router.get('/scenario1', checkNotLogin);
 router.get('/scenario1',function (req,res,next) {
+	var username = req.session.user;
+	var pos = [];
 	var scen = [];
-	ScenarioModel.find().exec(function (err, scenarios) {
-        if (err) {
-            next(err);
-        }
-        scen = scenarios.map(function(scenario) {
-            return {'timu':scenario.name, 'xuanze':scenario.scenario[0] }
-        });
-        res.render('scenario1', { title: '随机场景1', scen: scen });
-    });
-	
+	console.log(username);
+	UserModel.find({'name':username}).exec(function (err, userinfo) {
+		if (err) {
+			console.log(err);
+			next(err);
+		}
+		console.log("asdfasdf:" + userinfo);
+		pos = userinfo.s1;
+		console.log(pos);
+		ScenarioModel.find().exec(function (err, scenarios) {
+        	if (err) {
+            	next(err);
+        	}
+        	scen = scenarios.map(function(scenario) {
+            	return {'timu':scenario.name, 'xuanze':scenario.scenario[0] }
+        	});
+        	res.render('scenario1', { title: '随机场景1', scen: scen });
+    	});
+	});	
 });
 
 // Random Scenario 2
