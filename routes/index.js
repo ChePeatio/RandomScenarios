@@ -3,6 +3,7 @@ var router = express.Router();
 var UserModel = require('../models/User.js');
 var UserProxy = require('../proxy/user.js');
 var ScenarioModel = require('../models/Scenario.js');
+var _    = require('lodash');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -63,22 +64,20 @@ router.post('/login',function (req,res,next) {
 //router.get('/scenario1', checkNotLogin);
 router.get('/scenario1',function (req,res,next) {
 	var username = req.session.user;
-	var pos = [];
-	var scen = [];
 	console.log(username);
-	UserModel.find({'name':username}).exec(function (err, userinfo) {
+	UserModel.findOne({'name':username}).exec(function (err, user) {
 		if (err) {
 			console.log(err);
 			next(err);
 		}
-		console.log("asdfasdf:" + userinfo);
-		pos = userinfo.s1;
+		console.log(user);
+        var pos = user.s1;
 		console.log(pos);
 		ScenarioModel.find().exec(function (err, scenarios) {
         	if (err) {
             	next(err);
         	}
-        	scen = scenarios.map(function(scenario) {
+        	var scen = scenarios.map(function(scenario) {
             	return {'timu':scenario.name, 'xuanze':scenario.scenario[0] }
         	});
         	res.render('scenario1', { title: '随机场景1', scen: scen });
