@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/User.js');
-var UserProxy = requrie('../proxy/user.js');
+var UserProxy = require('../proxy/user.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -14,16 +14,24 @@ router.post('/',function (req,res,next) {
 	var username  = req.body.username;
     if(username == ''){
         //这里用flash提示用户,用户名不能为空
+        console.log("user name cannot be empty");
+        return res.redirect('/');
     }
 
     UserModel.findOne({name:username}, function (err,user) {
-		if (err || !user) {
-			req.flash('error', err);
+		if (err) {
+			//req.flash('error', err);
+            console.log(err);
 			return res.redirect('/');
 		}
-        UserProxy.newAndSave(name,function(err,user){
+        if(user){
+            console.log('the user has been created!');
+            return res.redirect('/');
+        }
+        UserProxy.newAndSave(username,function(err,user){
             if(err || !user){
-                req.flash('error', err);
+                //req.flash('error', err);
+                console.log(err);
                 return res.redirect('/');
             }
             console.log(user);

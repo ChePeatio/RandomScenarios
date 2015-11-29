@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        unique: true,
+        trim: true
+    },
     s1: [Number],
     s2: [Number],
     s3: [Number]

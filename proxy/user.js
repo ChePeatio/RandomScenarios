@@ -33,9 +33,9 @@ var generateRandom = function (callback) {
         if (err) {
             callback(err, null);
         }
-        random = scenarios.map(function (scenario) {
+        random = scenarios.map(function(scenario) {
             var length = scenario.scenario.length;
-            return _.random(length);
+            return _.random(length-1);
         });
         callback(null,random);
     });
@@ -47,7 +47,7 @@ module.exports.newAndSave = function (name, callback) {
     var ep = eventproxy();
     ep.fail(callback);
 
-    ep.all(s1, s2, s3, function (s1, s2, s3) {
+    ep.all('s1', 's2', 's3', function (s1, s2, s3) {
         user.name = name;
         user.s1 = s1;
         user.s2 = s2;
