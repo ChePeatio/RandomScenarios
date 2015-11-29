@@ -5,12 +5,15 @@
     <form class="form-horizontal" method="post">
       <fieldset>
         <legend>用户登入（用户名是您手机号的后四位）</legend>
-          <div class="control-group">
-            <label for="username" class="control-label">用户名</label>
-            <div class="controls">
-              <input type="text" name="username" class="input-xlarge" id="username">
-            </div>
+        <div class="control-group">
+          <label for="username" class="control-label">用户名</label>
+          <div class="controls">
+            <input type="text" name="username" class="input-xlarge" id="username">
+            <% if (error) { %>
+              <p><%= error %></p>
+            <% } %>
           </div>
+        </div>
 
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">登录</button>

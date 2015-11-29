@@ -9,46 +9,16 @@
       </tr>
   </thead>
   <tbody>
-    <tr class="active">
-      <td>不遵从给公司带来的收益</td>
-      <td>可以给公司节约少量的钱</td>
-    </tr>
-    <tr class="success">
-      <td>不遵从给经理带来的好处</td>
-      <td>使经理升职或加薪的可能性提高</td>
-    </tr>
-    <tr class="active">
-      <td>不遵从给公司带来的收益</td>
-      <td>可以给公司节约少量的钱</td>
-    </tr>
-    <tr class="success">
-      <td>不遵从给经理带来的好处</td>
-      <td>使经理升职或加薪的可能性提高</td>
-    </tr>
-    <tr class="active">
-      <td>不遵从给公司带来的收益</td>
-      <td>可以给公司节约少量的钱</td>
-    </tr>
-    <tr class="success">
-      <td>不遵从给经理带来的好处</td>
-      <td>使经理升职或加薪的可能性提高</td>
-    </tr>
-    <tr class="active">
-      <td>不遵从给公司带来的收益</td>
-      <td>可以给公司节约少量的钱</td>
-    </tr>
-    <tr class="success">
-      <td>不遵从给经理带来的好处</td>
-      <td>使经理升职或加薪的可能性提高</td>
-    </tr>
-    <tr class="active">
-      <td>不遵从给公司带来的收益</td>
-      <td>可以给公司节约少量的钱</td>
-    </tr>
-    <tr class="success">
-      <td>不遵从给经理带来的好处</td>
-      <td>使经理升职或加薪的可能性提高</td>
-    </tr>
+    <% scen.forEach(function(scenario, index){ 
+      if (index % 2 == 0) { %>
+        <tr class="active">
+    <% } else { %>
+        <tr class="success">
+    <% } %>
+      <td><%= scenario.timu %></td>
+      <td><%= scenario.xuanze %></td>
+      </tr>
+    <% }) %>
   </tbody>
 </table>
 </div>

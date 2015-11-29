@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var config = require('./config.js');
+var session = require('express-session');
+var flash = require('connect-flash');
 
 
 var mongoose = require('mongoose');
@@ -15,6 +17,7 @@ mongoose.connect(config.db,function(err) {
         console.log('connection successful : ' + config.db);
     }
 });
+
 
 var routes = require('./routes/index');
 
@@ -31,6 +34,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
+
+app.use(session({
+  secret:'wrgidsg3469fjvx#T#jwuijgf',
+  cookie:{maxAge:60*1000}
+}));
+/*
+app.use(function(req, res, next) {
+  console.log("app.user local");
+  res.local.user = req.session.user;
+  next();
+});*/
+
 
 app.use('/', routes);
 
