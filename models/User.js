@@ -45,6 +45,15 @@ function generateRandom() {
 
 	// 获取Scenario表中的数据，用来生成随机数
 //	var numOfScenario = ScenarioModel.count();
+	ScenarioModel.find(function (err, result){
+		if (err) {
+			console.log("Scenario error: " + err);
+		}
+    	if(result.length !== 0) {
+    		console.log("Scenario count: " + result.length);
+    	} 
+	});
+
 	var numOfScenario = 10;
 	var randomArray = new Array(numOfScenario);
 	for (var i=0; i<numOfScenario; i++) {
