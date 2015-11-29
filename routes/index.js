@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/User.js');
+var UserModel = require('../models/User.js');
+var UserProxy = requrie('../proxy/user.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -10,16 +11,24 @@ router.get('/', function (req, res, next) {
 // normal user login the system
 router.post('/',function (req,res,next) {
 
-	var nuser = new User({
-		name : req.body.username
-	});
+	var username  = req.body.username;
+    if(username == ''){
+        //这里用flash提示用户,用户名不能为空
+    }
 
-	User.get(nuser.name, function (err) {
-		if (err) {
+    UserModel.findOne({name:username}, function (err,user) {
+		if (err || !user) {
 			req.flash('error', err);
 			return res.redirect('/');
 		}
-		return res.redirect('/scenario1');
+        UserProxy.newAndSave(name,function(err,user){
+            if(err || !user){
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            console.log(user);
+            return res.redirect('/scenario1');
+        });
 	});
 });
 
