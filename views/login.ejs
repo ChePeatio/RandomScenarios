@@ -3,20 +3,26 @@
   <fieldset>
     <legend>系统管理员登录</legend>
     <div class="control-group">
-       <label for="username" class="control-label">账号</label>
-       <div class="controls">
-          <input type="text" name="username" class="input-xlarge" id="username">
-       </div>
+      <label for="username" class="control-label">账号</label>
+      <div class="controls">
+        <input type="text" name="username" class="input-xlarge" id="username">
+      </div>
     </div>
     <div class="control-group">
       <label for="password" class="control-label">口令</label>
       <div class="controls">
-         <input type="password" name="password" class="input-xlarge" id="password">
+        <input type="password" name="password" class="input-xlarge" id="password">
       </div>
     </div>
-
+    <% if (error) { %>
+    <div class="control-group">
+      <div class="controls">
+        <label class="control-label"><%= error %></label>
+      </div>
+    </div>
+    <% } %>
     <div class="form-actions">
-       <button type="submit" class="btn btn-primary" >登录</button>
+      <button type="submit" class="btn btn-primary" >登录</button>
     </div>
   </fieldset>
 </form>
