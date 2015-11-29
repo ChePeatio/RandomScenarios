@@ -64,6 +64,7 @@ router.post('/login',function (req,res,next) {
 //router.get('/scenario1', checkNotLogin);
 router.get('/scenario1',function (req,res,next) {
 	var username = req.session.user;
+	if (username) {
 	console.log(username);
 	UserModel.findOne({'name':username}).exec(function (err, user) {
 		if (err) {
@@ -77,42 +78,94 @@ router.get('/scenario1',function (req,res,next) {
         	if (err) {
             	next(err);
         	}
-        	var scen = scenarios.map(function(scenario) {
-            	return {'timu':scenario.name, 'xuanze':scenario.scenario[0] }
-        	});
+        	var scen = [];
+        	for (var i=0; i<scenarios.length; i++) {
+        		for (var j=0; j<scenarios.length; j++) {
+        			if (i == scenarios[j].id) {
+        				scen[i] = {'timu':scenarios[j].name, 'xuanze':scenarios[j].scenario[pos[i]]};
+        				break;
+        			}
+        		}
+        	}
         	res.render('scenario1', { title: '随机场景1', scen: scen });
     	});
 	});	
+} else {
+	req.flash('error', "登录超时");
+	res.redirect('/');
+}
 });
 
 // Random Scenario 2
 //router.get('/scenario2', checkNotLogin);
 router.get('/scenario2',function (req,res,next) {
-	var scen = [];
-	ScenarioModel.find().exec(function (err, scenarios) {
-        if (err) {
-            next(err);
-        }
-        scen = scenarios.map(function(scenario) {
-            return {'timu':scenario.name, 'xuanze':scenario.scenario[1] }
-        });
-        res.render('scenario2', { title: '随机场景2', scen: scen });
-    });
+	var username = req.session.user;
+	if (username) {
+		console.log(username);
+	UserModel.findOne({'name':username}).exec(function (err, user) {
+		if (err) {
+			console.log(err);
+			next(err);
+		}
+		console.log(user);
+        var pos = user.s2;
+		console.log(pos);
+		ScenarioModel.find().exec(function (err, scenarios) {
+        	if (err) {
+            	next(err);
+        	}
+        	var scen = [];
+        	for (var i=0; i<scenarios.length; i++) {
+        		for (var j=0; j<scenarios.length; j++) {
+        			if (i == scenarios[j].id) {
+        				scen[i] = {'timu':scenarios[j].name, 'xuanze':scenarios[j].scenario[pos[i]]};
+        				break;
+        			}
+        		}
+        	}
+        	res.render('scenario2', { title: '随机场景2', scen: scen });
+    	});
+	});	
+} else {
+	req.flash('error', "登录超时");
+	res.redirect('/');
+}
 });
 
 // Random Scenario 3
 //router.get('/scenario3', checkNotLogin);
 router.get('/scenario3',function (req,res,next) {
-	var scen = [];
-	ScenarioModel.find().exec(function (err, scenarios) {
-        if (err) {
-            next(err);
-        }
-        scen = scenarios.map(function(scenario) {
-            return {'timu':scenario.name, 'xuanze':scenario.scenario[0] }
-        });
-        res.render('scenario3', { title: '随机场景3', scen: scen });
-    });
+	var username = req.session.user;
+	if (username) {
+	console.log(username);
+	UserModel.findOne({'name':username}).exec(function (err, user) {
+		if (err) {
+			console.log(err);
+			next(err);
+		}
+		console.log(user);
+        var pos = user.s3;
+		console.log(pos);
+		ScenarioModel.find().exec(function (err, scenarios) {
+        	if (err) {
+            	next(err);
+        	}
+        	var scen = [];
+        	for (var i=0; i<scenarios.length; i++) {
+        		for (var j=0; j<scenarios.length; j++) {
+        			if (i == scenarios[j].id) {
+        				scen[i] = {'timu':scenarios[j].name, 'xuanze':scenarios[j].scenario[pos[i]]};
+        				break;
+        			}
+        		}
+        	}
+        	res.render('scenario3', { title: '随机场景3', scen: scen });
+    	});
+	});	
+} else {
+	req.flash('error', "登录超时");
+	res.redirect('/');
+}
 });
 
 

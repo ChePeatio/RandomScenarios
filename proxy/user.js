@@ -33,10 +33,14 @@ var generateRandom = function (callback) {
         if (err) {
             callback(err, null);
         }
-        random = scenarios.map(function(scenario) {
-            var length = scenario.scenario.length;
-            return _.random(length-1);
-        });
+        for (var i=0; i<scenarios.length; i++) {
+            for (var j=0; j<scenarios.length; j++) {
+                if (i == scenarios[j].id) {
+                    random[i] = _.random(scenarios[j].scenario.length-1);
+                    break;
+                }
+            }
+        }
         callback(null,random);
     });
 }
