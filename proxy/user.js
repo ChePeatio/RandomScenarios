@@ -29,17 +29,12 @@ var _ = require('lodash');
 
 var generateRandom = function (callback) {
     var random = [];
-    ScenarioModel.find().exec(function (err, scenarios) {
+    ScenarioModel.find().sort({'id':1}).exec(function (err, scenarios) {
         if (err) {
             callback(err, null);
         }
         for (var i=0; i<scenarios.length; i++) {
-            for (var j=0; j<scenarios.length; j++) {
-                if (i == scenarios[j].id) {
-                    random[i] = _.random(scenarios[j].scenario.length-1);
-                    break;
-                }
-            }
+            random[i] = _.random(scenarios[i].scenario.length-1);
         }
         callback(null,random);
     });

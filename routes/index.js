@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/User.js');
 var UserProxy = require('../proxy/user.js');
+var ScenarioProxy = require('../proxy/scenario.js');
 var ScenarioModel = require('../models/Scenario.js');
 var _    = require('lodash');
 
@@ -13,7 +14,7 @@ router.get('/', function (req, res, next) {
 
 // normal user login the system
 router.post('/',function (req,res,next) {
-
+	req.session.systemadmin = null;
 	var username = req.body.username;
     if(username.length!==4 || isNaN(username)){
         //这里用flash提示用户,用户名不能为空
@@ -21,7 +22,7 @@ router.post('/',function (req,res,next) {
         console.log("The format of username is wrong, please retry!");
         return res.redirect('/');
     }
-
+    console.time("target page generate!");
     UserModel.findOne({name:username}, function (err,user) {
 		if (err) {
 			req.flash('error', "系统错误：" + err);
@@ -34,7 +35,7 @@ router.post('/',function (req,res,next) {
             console.log(req.session);
             return res.redirect('/scenario1');
         }
-        UserProxy.newAndSave(username,function(err,user){
+        UserProxy.newAndSave(username,function (err,user){
             if(err || !user){
                 req.flash('error', "系统错误：" + err);
                 console.log(err);
@@ -46,6 +47,7 @@ router.post('/',function (req,res,next) {
             return res.redirect('/scenario1');
         });
 	});
+	console.timeEnd("target page generate!");
 });
 
 
@@ -58,6 +60,7 @@ router.get('/login',function (req,res,next) {
 
 // system manager login the system
 router.post('/login',function (req,res,next) {
+	req.session.user = null;
 	if (req.body.username!="xiadaadmin" || req.body.password!="zxcvbnm7890") {
 		req.flash('error', "用户名、口令错误！");
 		res.redirect('/login');
@@ -72,106 +75,37 @@ router.post('/login',function (req,res,next) {
 // Random Scenario 1
 router.get('/scenario1',function (req,res,next) {
 	var username = req.session.user;
-	if (username) {
-		//console.log(username);
-		UserModel.findOne({'name':username}).exec(function (err, user) {
-			if (err) {
-				console.log(err);
-				next(err);
-			}
-		//console.log(user);
-		var pos = user.s1;
-		//console.log(pos);
-		ScenarioModel.find().exec(function (err, scenarios) {
-			if (err) {
-				next(err);
-			}
-			var scen = [];
-			for (var i=0; i<scenarios.length; i++) {
-				for (var j=0; j<scenarios.length; j++) {
-					if (i == scenarios[j].id) {
-						scen[i] = {'timu':scenarios[j].name, 'xuanze':scenarios[j].scenario[pos[i]]};
-						break;
-					}
-				}
-			}
-			res.render('scenario1', { title: '随机场景1', scen: scen, user:username });
-		});
-	});	
-	} else {
-		req.flash('error', "未登录或登录超时");
-		res.redirect('/');
-	}
+	ScenarioProxy.generateScenario(username, 1, function(err, scen) {
+		if(err){
+           	req.flash('error', "未登录或登录超时");
+			res.redirect('/');
+       	}
+       	res.render('scenario1', { title: '随机场景1', scen: scen, user:username });
+	});
 });
 
 // Random Scenario 2
 router.get('/scenario2',function (req,res,next) {
 	var username = req.session.user;
-	if (username) {
-		//console.log(username);
-		UserModel.findOne({'name':username}).exec(function (err, user) {
-			if (err) {
-				console.log(err);
-				next(err);
-			}
-			//console.log(user);
-			var pos = user.s2;
-			//console.log(pos);
-			ScenarioModel.find().exec(function (err, scenarios) {
-				if (err) {
-					next(err);
-				}
-				var scen = [];
-				for (var i=0; i<scenarios.length; i++) {
-					for (var j=0; j<scenarios.length; j++) {
-						if (i == scenarios[j].id) {
-							scen[i] = {'timu':scenarios[j].name, 'xuanze':scenarios[j].scenario[pos[i]]};
-							break;
-						}
-					}
-				}
-				res.render('scenario2', { title: '随机场景2', scen: scen, user:username });
-			});
-		});	
-	} else {
-		req.flash('error', "未登录或登录超时");
-		res.redirect('/');
-	}
+	ScenarioProxy.generateScenario(username, 2, function(err, scen) {
+		if(err){
+           	req.flash('error', "未登录或登录超时");
+			res.redirect('/');
+       	}
+       	res.render('scenario2', { title: '随机场景2', scen: scen, user:username });
+	});
 });
 
 // Random Scenario 3
 router.get('/scenario3',function (req,res,next) {
 	var username = req.session.user;
-	if (username) {
-		//console.log(username);
-		UserModel.findOne({'name':username}).exec(function (err, user) {
-			if (err) {
-				console.log(err);
-				next(err);
-			}
-			//console.log(user);
-			var pos = user.s3;
-			//console.log(pos);
-			ScenarioModel.find().exec(function (err, scenarios) {
-				if (err) {
-					next(err);
-				}
-				var scen = [];
-				for (var i=0; i<scenarios.length; i++) {
-					for (var j=0; j<scenarios.length; j++) {
-						if (i == scenarios[j].id) {
-							scen[i] = {'timu':scenarios[j].name, 'xuanze':scenarios[j].scenario[pos[i]]};
-							break;
-						}
-					}
-				}
-				res.render('scenario3', { title: '随机场景3', scen: scen, user:username });
-			});
-		});	
-	} else {
-		req.flash('error', "未登入或登录超时");
-		res.redirect('/');
-	}
+	ScenarioProxy.generateScenario(username, 3, function(err, scen) {
+		if(err){
+           	req.flash('error', "未登录或登录超时");
+			res.redirect('/');
+       	}
+       	res.render('scenario3', { title: '随机场景3', scen: scen, user:username });
+	});
 });
 
 
@@ -179,7 +113,7 @@ router.get('/scenario3',function (req,res,next) {
 router.get('/userlist',function (req, res, next) {
 	var systemadmin = req.session.systemadmin;
 	if (systemadmin) {
-		UserModel.find().exec(function (err, usersinfo) {
+		UserModel.find().sort({'name':1}).exec(function (err, usersinfo) {
 			if (err) {
 				console.log(err);
 				next(err);

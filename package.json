@@ -1,7 +1,8 @@
 {
-  "name": "myapp",
-  "version": "0.0.0",
-  "private": true,
+  "name": "RandomScenariosSystem",
+  "version": "0.1.0",
+  "description": "A sample web system app of random scenarios using Express",
+  "main": "index.js",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -18,5 +19,19 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "connect-flash": "0.1.1"
-  }
+  },
+  "engines": {
+    "node": "4.4",
+    "npm": "2.14.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ChePeatio/RandomScenarios.git"
+  },
+  "keywords": [
+    "RandomScenarios",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
 }
