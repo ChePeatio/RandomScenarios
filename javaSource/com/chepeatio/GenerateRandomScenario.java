@@ -84,7 +84,7 @@ public class GenerateRandomScenario {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             while ((line=br.readLine())!=null) {
-                String[] multiParts = line.split(",");
+                String[] multiParts = line.split("%%");
                 if (multiParts.length > 0)
                     res.add(multiParts);
             }
