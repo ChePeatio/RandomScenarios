@@ -75,13 +75,18 @@ router.post('/login',function (req,res,next) {
 // Random Scenario 1
 router.get('/scenario1',function (req,res,next) {
 	var username = req.session.user;
-	ScenarioProxy.generateScenario(username, 1, function(err, scen) {
+	if (username) {
+		ScenarioProxy.generateScenario(username, 1, function(err, scen) {
 		if(err){
-           	req.flash('error', "未登录或登录超时");
+           		req.flash('error', "未登录或登录超时");
 			res.redirect('/');
-       	}
-       	res.render('scenario1', { title: '随机场景1', scen: scen, user:username });
-	});
+       		}
+       		res.render('scenario1', { title: '随机场景1', scen: scen, user:username });
+		});
+        } else {
+		req.flash('error', "未登录或登录超时");
+		res.redirect('/');
+	}
 });
 
 // Random Scenario 2
