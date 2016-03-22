@@ -77,13 +77,13 @@ router.get('/scenario1',function (req,res,next) {
 	var username = req.session.user;
 	if (username) {
 		ScenarioProxy.generateScenario(username, 1, function(err, scen) {
-		if(err){
+			if(err){
            		req.flash('error', "未登录或登录超时");
-			res.redirect('/');
+				res.redirect('/');
        		}
        		res.render('scenario1', { title: '随机场景1', scen: scen, user:username });
 		});
-        } else {
+    } else {
 		req.flash('error', "未登录或登录超时");
 		res.redirect('/');
 	}
@@ -92,25 +92,36 @@ router.get('/scenario1',function (req,res,next) {
 // Random Scenario 2
 router.get('/scenario2',function (req,res,next) {
 	var username = req.session.user;
-	ScenarioProxy.generateScenario(username, 2, function(err, scen) {
-		if(err){
-           	req.flash('error', "未登录或登录超时");
-			res.redirect('/');
-       	}
-       	res.render('scenario2', { title: '随机场景2', scen: scen, user:username });
-	});
+	if (username) {
+		ScenarioProxy.generateScenario(username, 2, function(err, scen) {
+			if(err){
+           		req.flash('error', "未登录或登录超时");
+				res.redirect('/');
+       		}
+       		res.render('scenario2', { title: '随机场景2', scen: scen, user:username });
+		});
+	} else {
+		req.flash('error', "未登录或登录超时");
+		res.redirect('/');
+	}
+	
 });
 
 // Random Scenario 3
 router.get('/scenario3',function (req,res,next) {
 	var username = req.session.user;
-	ScenarioProxy.generateScenario(username, 3, function(err, scen) {
-		if(err){
-           	req.flash('error', "未登录或登录超时");
-			res.redirect('/');
-       	}
-       	res.render('scenario3', { title: '随机场景3', scen: scen, user:username });
-	});
+	if (username) {
+		ScenarioProxy.generateScenario(username, 3, function(err, scen) {
+			if(err){
+        	   	req.flash('error', "未登录或登录超时");
+				res.redirect('/');
+       		}
+       		res.render('scenario3', { title: '随机场景3', scen: scen, user:username });
+		});
+	} else {
+		req.flash('error', "未登录或登录超时");
+		res.redirect('/');
+	}
 });
 
 
